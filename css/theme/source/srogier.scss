@@ -59,6 +59,9 @@ section.has-dark-background {
 }
 
 .reveal {
+  background-image: url(../../images/decitre.png);
+  background-repeat: no-repeat;
+  background-position: 40px 40px;
   pre {
     width: 100%;
     box-shadow: none;
@@ -75,8 +78,33 @@ section.has-dark-background {
     &.no-style {
       list-style: none;
     }
+
+    li {
+      line-height: 1.5em;
+    }
   }
 
+  .list-header {
+    line-height: 2em;
+    font-weight: bold;
+  }
+
+  .strong {
+    font-weight: bold;
+  }
+
+  .margin-bottom {
+      margin-bottom: .5em;
+  }
+
+  .smaller {
+    font-size: 75%;
+  }
+
+  .legend {
+    font-size: 75%;
+    font-style: italic;
+  }
 }
 
 section[data-background] {
@@ -92,3 +120,4 @@ section[data-background] {
     padding: 1em 0.1em;
   }
 }
+

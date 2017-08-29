@@ -297,17 +297,33 @@ body {
   min-height: 1px;
   margin-left: 20px; }
 
-.reveal pre {
-  width: 100%;
-  box-shadow: none; }
-  .reveal pre code {
-    padding: 10px; }
-
-.reveal .source {
-  font-size: 0.5em; }
-
-.reveal ul.no-style {
-  list-style: none; }
+.reveal {
+  background-image: url(../../images/decitre.png);
+  background-repeat: no-repeat;
+  background-position: 40px 40px; }
+  .reveal pre {
+    width: 100%;
+    box-shadow: none; }
+    .reveal pre code {
+      padding: 10px; }
+  .reveal .source {
+    font-size: 0.5em; }
+  .reveal ul.no-style {
+    list-style: none; }
+  .reveal ul li {
+    line-height: 1.5em; }
+  .reveal .list-header {
+    line-height: 2em;
+    font-weight: bold; }
+  .reveal .strong {
+    font-weight: bold; }
+  .reveal .margin-bottom {
+    margin-bottom: .5em; }
+  .reveal .smaller {
+    font-size: 75%; }
+  .reveal .legend {
+    font-size: 75%;
+    font-style: italic; }
 
 section[data-background] > h1,
 section[data-background] > h2,

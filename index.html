@@ -7,7 +7,7 @@
 
     <title>On a migré nos sites en full HTTPS ! - Forum PHP 2017</title>
 
-    <meta name="description" content="On a migré nos sites en full HTTPS ! - Forum PHP 2017">
+    <meta name="description" content="On a migré nos sites en full HTTPS ! - AFUP Lyon">
 
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/srogier.css" id="theme">
@@ -29,33 +29,54 @@
 <div class="reveal">
 
     <div class="slides">
-        <section>
+        <section data-background="images/background/intro.jpg">
             <div class="block-title block-title--main">
-                <h1>On a migré nos sites en full HTTPS ! - Forum PHP 2017</h1>
-                <h3>Forum PHP 2017 - 26 octobre 2017</h3>
+                <h1>On a migré nos sites en full HTTPS !</h1>
+                <h3>AFUP Lyon - 26 septembre 2017</h3>
                 <a href="https://twitter.com/srogier"><i class="fa fa-twitter"></i>@srogier</a> /
                 <a href="https://github.com/srogier"><i class="fa fa-github"></i> srogier</a>
             </div>
         </section>
 
         <section>
-            <section>
-                <h3>On a migré nos sites en full HTTPS !</h3>
+            <section data-background="images/background/intro.jpg">
+                <h2>On a migré nos sites en full HTTPS !</h2>
                 <aside class="notes">
+                    Je vais vous parler de HTTPS et de la migration que nous avons faite pour l’utiliser systématiquement sur nos différents sites. Une connexion sécurisée était bien sûr déjà en place sur notre tunnel de commande, sur les comptes clients, partout où des données sensibles transitent.  <hr />
 
+                    Mais depuis longtemps déjà, nous avions en tête d’utiliser partout HTTPS sur notre site. Et au final ce projet est toujours resté dans un coin de notre feuille de route. <hr />
+
+                    Sauf qu’un matin de janvier 2017, après une mise à jour de Firefox, on a constaté que sur certaines de nos pages, lorsque la popin de connexion était chargée, nous avions une alerte de sécurité qui apparaissait dans la barre de navigation nous indiquant que la connexion n’était pas sécurisée. <hr />
+
+                    Et voilà comment on fait pour remonter un projet de migration vers du full HTTPS en haut de la pile des choses à faire. <hr />
+
+                    Je vais donc vous présenter notre migration, comment elle s’est déroulée et les effets que nous avons constatés. <hr />
 
                 </aside>
             </section>
             <section>
                 <h2>Decitre.fr</h2>
 
-                <h3>L'équipe</h3>
+                <h3>L'équipe technique</h3>
 
                 <ul>
-                    <li>5 développeurs + 1 responsable technique</li>
+                    <li>6 personnes</li>
+                    <li>Nous gérons :
+                        <ul>
+                            <li>e-commerce B2C (decitre.fr et ses marques blanches)</li>
+                            <li>e-commerce B2B (decitrepro.fr)</li>
+                            <li>ORB, un outil de recherche bibliographique</li>
+                        </ul>
+                    </li>
                 </ul>
 
                 <aside class="notes">
+                   développeur chez DI, équipe tech composée de 6 pers..  <hr />
+
+                    Decitre : groupe de libraire (10 librairies physiques) + decitre.fr, librairie en ligne. <hr />
+
+                    Nous gérons également versions en MB  pour partenaires + équivalent B2B (decitrepro) + proposons ORB outil mode SAAS de recherche bibliographique. <hr />
+
                 </aside>
             </section>
 
@@ -65,194 +86,430 @@
                 <h3>Le site</h3>
 
                 <ul>
-                    <li>4 millions de pages vues par mois</li>
+                    <li>4,2 millions de pages vues par mois</li>
                     <li>1,8 million de produits</li>
                 </ul>
 
                 <aside class="notes">
+                    Decitre.fr existe depuis 1997. version actuelle basée sur magento 1 en place depuis 2012. <hr />
 
+                    Pour vous donner une idée du trafic du decitre.fr, moyenne de 4,2 millions de pages vues par mois. <hr />
+
+                    Quant à notre catalogue produit, on comptabilise 1.8 million de livres et ebooks. <hr />
                 </aside>
             </section>
         </section>
 
 
         <section>
-            <section data-background="images/background/performance.jpg">
+            <section data-background="images/background/lock.jpg">
+                <!-- https://pixabay.com/fr/ch%C3%A2teau-s%C3%A9curit%C3%A9-cadenas-s%C3%BBr-m%C3%A9tal-838352/ -->
                 <h2>HTTPS</h2>
 
                 <aside class="notes">
+                    <span class="time">02:00</span>
+                    Avant de vous parler de la migration en elle-même, je vais commencer par
+                    présenter ce qu’est HTTPS, <br/>
+                    comment ça fonctionne <br/>
+                    et pourquoi il est de plus en plus important d’utiliser ce protocole sur la totalité de nos sites <hr />
 
                 </aside>
             </section>
 
             <section>
-                <h2>HTTPS, c'est quoi ?</h2>
+                <h3>HTTPS, c'est quoi ?</h3>
 
 
-                <p>HTTP + chiffrement</p>
+                <p class="strong margin-bottom">HTTP + TLS/SSL </p>
 
                 <ul>
-                    <li>Chiffrement des donnée</li>
+                    <li>Chiffrement des données</li>
                     <li>Authentification du serveur</li>
                     <li>Intégrité des données</li>
                 </ul>
 
-                <aside class="notes">
+                <p class="legend acronyme">
+                    TLS : Transport Layer Security <br />
+                    SSL : Secure Socket Layers <br />
+                </p>
 
-                </aside>
-            </section>
-
-
-            <section>
-                <h2>HTTPS, c'est quoi ?</h2>
-
-
-                <ul>
-                    <li>60 % des parges chargées dans Firefox en juillet 2017</li>
-                    <li>34% de l'index Google en 2016</li>
-                </ul>
 
                 <aside class="notes">
+                    HTTPS (Hypertext Transfer Protocole Secure) : combinaison de HTTP avec en amont une étape de chiffrement fournies par les protocoles SSL + TLS. <hr />
+                    permet de garantir 3 choses <hr />
 
-                </aside>
-
-            </section>
-
-
-            <section>
-                <h2>Alertes de sécurité dans les navigateurs</h2>
-
-                // TODO : image alerte de sécurité
-
-                 <aside class="notes">
+                    <ul>
+                        <li>chiffrement des données d’un bout à l’autre de la chaîne. Les données ne transitent pas en clair et ne peuvent être déchiffrées que par le client et le serveur. Par exemple qqn qui écoute une connexion non sécurisée sur Wifi Public </li>
+                        <li>authentification du serveur. validité de l’identité du serveur peut être vérifiée à l’aide d’un certificat.</li>
+                        <li>intégrité des données échangées. Chaque message contient mécanisme de vérification qui permet de détecter si celui-ci a été altéré. </li>
+                    </ul>
 
                 </aside>
             </section>
 
 
             <section>
-                <h2>Alertes de sécurité dans les navigateurs</h2>
+                <h3>HTTPS, c'est quoi ?</h3>
 
-                // TODO : image alerte de sécurité https://4.bp.blogspot.com/-oL-YUq4Yhk8/WRswkQ1Pf6I/AAAAAAAATcE/jFL-dN_6ljkptLkm0xL-rhJ1CyIftq3GQCLcB/s1600/form-and-incognito-http-bad-verbose.png
+                <p>60% des requêtes tous sites confondus dans Firefox</p>
+                
+                <img src="images/intro_https/firefox_telemetry.png">
 
-                 <aside class="notes">
+                <div class="legend">Source : Firefox Telemetry</div>
+
+                <aside class="notes">
+                    D’après les statistiques de Firefox Telemetry, en juillet 2017, 60% des pages chargées le sont avec HTTPS contre 45% un an plus tôt. <hr />
+                </aside>
+
+            </section>
+
+
+            <section>
+                <h3>Alertes de sécurité dans les navigateurs</h3>
+
+                <img src="images/intro_https/alerte_decitre.png">
+
+                <aside class="notes">
+                    Depuis + d’un an, navigateurs poussent pour une utilisation du web plus sécurisée .  incitent nos sites proposent du HTTPS par défaut <hr />
+
+                    Depuis janvier 2017, Chrome et Firefox affichent une alerte de connexion non sécurisée sur les pages (formulaire de saisie de mot de passe ou de carte de crédit sur des formulaire de pages webs livrées en HTTP. <hr />
+
 
                 </aside>
             </section>
 
 
             <section>
-                <h2>Les enjeux de la migration</h2>
+                <h3>Alertes de sécurité dans les navigateurs</h3>
+
+                <img src="images/intro_https/chrome_62.png">
+
+                <aside class="notes">
+                    version 62 (octobre), Chrome va encore plus loin. alerte affichée sur toutes les pages en mode incognito + mode normal à partir du moment où utilisateur commencera à saisir informations. <hr />
+
+                    la moindre saisie dans le moindre champ de recherche ==> alerte de sécurité <hr />
+
+                    Bref, avec ces messages affichées, les navigateurs de nos utilisateurs nous poussent à proposer une connexion sécurisée sur toutes les pages de nos sites. <hr />
+
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>Les enjeux de notre migration</h3>
 
                 <ul>
                     <li>Sécurité</li>
+                    <li>Rassurance et confiance de nos clients</li>
                     <li>Performance Web</li>
                     <li>Positionnement Google</li>
-                    <li>Rassurance et confiance de nos clients</li>
                 </ul>
 
-                 <aside class="notes">
+                <aside class="notes">
+                    Quels sont enjeux de notre migration et quel intérêt on a à tout passer en full HTTPS ? <hr />
+                    ok, on n’aura plus ces alertes, mais ce sont les raisons pour lesquelles ces alertes sont là qui sont à prendre en compte. <hr />
+
+                    La + importante, aspect sécurité. En utilisant connexion chiffrée, informations échangées entre client et serveur  ne peuvent être volées si jamais connexion écoutée. <hr />
+
+                    Ensuite visuellement, on souhaite avoir site sans alerte de sécurité, avec beau cadenas vert affiché tout le long du parcours de nos clients pour le rassurer et qu’il ait confiance en notre site <hr />
+
+                    pour la perf web, avoir HTTPS va nous permettre activer HTTP/2 partout et bénéficier optimisations liées à fonctionnement. <hr />
+
+                    positionnement des sites dans google devrait également s’améliorer. Utilisation connexion sécurisée a priori privilégiée par moteur de recherche. devrions donc avoir plus de trafic vers nos sites provenant Google et ses collègues. <hr />
 
                 </aside>
 
             </section>
 
             <section>
-                <h2>Les contraintes</h2>
+                <h3>Nos contraintes</h3>
 
                 <ul>
-                    <li>Eviter les coupures</li>
-                    <li>Bascule itérative</li>
+                    <li>Éviter les coupures</li>
+                    <li>Scénarios itératifs et réversibles</li>
                     <li>Site par site</li>
                     <li>Sans casser le SEO</li>
                 </ul>
+
+                <p class="legend acronyme">SEO : Search Engine Optimization</p>
+
+                <aside class="notes">
+                    objectif pour nous => basculer nos différents sites vers une utilisation totale de HTTPS. <hr />
+
+                    en évitant coupures de services <hr />
+
+                    en prévoyant scénarios itératifs et réversibles pour gérer les évènements imprévus. <hr />
+
+                    site par site (notre infra magento b2c fait tourner 3 sites) <hr />
+
+                    sans casser notre SEO et donc éviter perte de visibilité et donc de ventes en cas d’erreur lors de la migration <hr />
+                </aside>
             </section>
         </section>
 
 
         <section>
-            <section data-background="images/background/performance.jpg">
+            <section data-background="images/background/lock-network.jpg">
+                <!-- https://pixabay.com/fr/politique-de-confidentialit%C3%A9-s%C3%A9curit%C3%A9-2499720/ -->
                 <h2>HTTPS : comment ça marche ?</h2>
 
                 <aside class="notes">
+                    <span class="time">6:00</span>
+                </aside>
+            </section>
+
+            <section>
+                <h3>SSL puis TLS</h3>
+
+
+                <div class="span6">
+                    <div class="list-header">SSL</div>
+                    <ul>
+                        <li>v2 (1995)</li>
+                        <li>v3 (1996)</li>
+                    </ul>
+                </div>
+
+                <div class="span6 fragment">
+                    <div class="list-header">TLS</div>
+                    <ul>
+                        <li>v1.0 (1999)</li>
+                        <li>v1.1 (2006)</li>
+                        <li>v1.2 (2008)</li>
+                        <li>v1.3 (brouillon)</li>
+                    </ul>
+                </div>
+
+
+                <aside class="notes">
+                    milieu des années 90, Netscape a commencé à développer protocole SSL  ==> but de créer protocole de sécurisation des échanges de données. <hr />
+
+                    // TODO alléger :
+                    première version de SSL pas publiée à cause de failles de sécurité. <hr />
+                    La version 2 sort 1995, rapidement suivie en 1996 par la version 3 qui corrige des failles de la version précédente. <hr />
+
+                    [CLICK] <hr />
+
+                    En 1999, un organisme independant l'IETF propose TLS , ==>  standard basé sur les spec de SSL. <hr />
+                    Version 1.3 qui pour le moment est à l’état de brouillon. <hr />
+
+                    Au fil du temps et découverte différentes failles de sécurité (POODLE, Heartbleed), versions anciennes de SSL dépréciées. Donc ne les utilisez plus.<hr />
+
 
                 </aside>
             </section>
 
             <section>
-                <h2>SSL puis TLS</h2>
+                <h3>TLS en détail</h3>
 
+
+                <img src="images/https/osi.png">
+
+                <aside class="notes">
+                    Si on ressort modèle OSI, partie TLS se trouve entre Transport gérée par TCP et partie application (HTTP pour appli Web, mais TLS peut être utilisé pour sécuriser autres protocoles applicatifs cf FTP, SMTP, etc.) <hr />
+
+                    Ouvrir connexion TCP sécurisée via TLS plus coûteuse qu’une ouverture de connexion normale. On va voir pourquoi. <hr />
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>TLS en détail</h3>
+
+
+                <img src="images/https/init_tcp.png">
+
+                <aside class="notes">
+                    Vu que TLS se pose au dessus d’une connexion TCP, il faut déjà en ouvrir une avant tout. <hr />
+
+                    C’est ce qu’on peut voir avec cette poignée de main TCP permettant l’établissement de la connexion. <hr />
+
+                    Comme chaque échange réseau : confronté latence ==>  Délai nécessaire pour que les paquets fasse A/R entre le navigateur et le serveur. <hr />
+
+                    dépend principalement de la distance navigateur / serveur et réseau utilisé <hr />
+
+                    Prendre valeur arbitraire de 50ms par A/R dans le cas d'une connexion ADSL. <hr />
+
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>TLS en détail</h3>
+
+                <img src="images/https/tls_1.png">
+
+                <aside class="notes">
+                    A partir de cette connexion TCP, il faut initialiser la connexion TLS. <hr />
+
+                    Il faut 4 messages, répartis en 2 A/R pour ouvrir cette connexion. <hr />
+                </aside>
+            </section>
+
+            <section>
+                <h3>TLS en détail</h3>
+
+                <img src="images/https/tls_2.png">
+
+                <aside class="notes">
+                    Lors de ces échanges, le navigateur et le serveur se mettent d'accord sur les protocoles, algorithmes de chiffrement, valide le certificat, et échange des clés de chiffrement qui serviront à chiffrer les données échangées. <hr />
+
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>TLS en détail</h3>
+
+                <img src="images/https/tls_restauration.png">
+
+                <aside class="notes">
+
+                    Il existe des mécanismes pour raccourcir cette poignées de main. <hr />
+
+                    Le client peut envoyer un identifier d'une précédente session lors de son ClientHEllo. <hr />
+
+                    Si la session correspondant est encore présente sur le serveur, elle peut être réutilisée.<hr />
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>OpenSSL</h3>
 
                 <ul>
-                    <li>1995 : SSL 2</li>
-                    <li>1996 : SSL 3</li>
-                    <li>1999 : TLS 1</li>
-                    <li>2006 : TLS 1.1</li>
-                    <li>2008 : TLS 1.2</li>
+                    <li>Librairie open source</li>
+                    <li>Outils de chiffrement</li>
+                    <li>Implémente TLS</li>
                 </ul>
 
 
                 <aside class="notes">
+                    Pour implémenter protocoles TLS et SSL sur serveurs ==> utilise OpenSSL. <hr />
+
+                    librairie opensource utilisée entre autres par serveurs Webs (apache, nignx, ) pour gérer la terminaison TLS. <hr />
+
+                    Mise à dispo d'un ensemble d'outil libres pour chiffrement <hr />
+
+                    propose plein d’outils en ligne de commande ==> générer des clés, tester et déboguer des connexion sécurisés, etc. <hr />
 
                 </aside>
             </section>
 
             <section>
-                <h2>TLS en détail</h2>
-
-
-                // TODO modèle OSI
-
-                <aside class="notes">
-
-                </aside>
-            </section>
-
-            <section>
-                <h2>TLS en détail</h2>
-
-
-                // TODO modèle handshake TCP
-
-                <aside class="notes">
-
-                </aside>
-            </section>
-
-
-            <section>
-                <h2>TLS en détail</h2>
-
-
-                // TODO modèle Client HEllo TLS
-
-                <aside class="notes">
-
-                </aside>
-            </section>
-
-            <section>
-                <h2>TLS en détail</h2>
-
-
-                // TODO modèle Client échange clé
-
-                <aside class="notes">
-
-                </aside>
-            </section>
-
-
-            <section>
-                <h2>Les certificats</h2>
+                <h3>Les certificats</h3>
 
                 <ul>
-                    <li>Domain Validation</li>
-                    <li>Organisation Validation</li>
-                    <li>Extended Validation</li>
+                    <li>Norme X.509</li>
+                    <li>Délivrés par une autorité de certification</li>
+                    <li>Lient des informations à une clé publique</li>
                 </ul>
 
                 <aside class="notes">
+                    certificat ==> document électronique - norme X.509
+
+                    délivré et signé par un tiers de confiance : l’autorité de certification. <hr />
+
+                    lie des informations sur son détenteur à une clé publique<hr />
+                </aside>
+            </section>
+
+            <section>
+                <h3>Les certificats</h3>
+
+                <img src="images/https/chaine_certificats.png">
+
+                <aside class="notes">
+                    Si on regarde le détail d’un certificat dans un navigateur on constate plusieurs niveaux : <hr />
+
+                    En fait, un certificat === une chaîne de confiance.  <hr />
+
+                    En bas de la chaine on trouve notre site, et chaque élément supérieur certifie celui du dessous <hr />
+
+                    Au plus haut on a le certificat du racine et c'est connu de  et c'est à lui que votre navigateur fait confiance.  <hr />
+
+                    Navigateur embarque liste de root certiticate qui évolue ds temps (par ex: Symamtec dégage chrome) <hr />
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>Typologie d'un certificat</h3>
+
+                <div class="span6">
+                    <div class="list-header">Plusieurs types</div>
+                    <ul>
+                        <li>DV - Domain Validation</li>
+                        <li>OV - Organization Validation</li>
+                        <li>EV - Extended Validation</li>
+                    </ul>
+                </div>
+
+                <div class="span6">
+                    <div class="list-header">Options</div>
+                    <ul>
+                        <li>Multi-domaines</li>
+                        <li>Wildcard (*.decitre.fr)</li>
+                    </ul>
+                </div>
+
+                <aside class="notes">
+                    existe différents types de certificats, où les informations du détenteur sont contrôlées de manière plus ou moins poussée.  <hr />
+
+                    En gros plus on a de contrôles, + certificats offrent garanties importantes et + certificats sont chers. <hr />
+
+                    Un certificat peut également être multidomaine, ou bien de type wildcard (portée sur tous les sous-domaines directs)<hr />
+
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>Typologie d'un certificat</h3>
+
+                <img src="images/https/decitre.png">
+
+                <div class="legend margin-bottom">Certificat EV présent sur www.decitre.fr</div>
+
+                <a class="smaller" href="https://www.troyhunt.com/on-the-perceived-value-ev-certs-cas-phishing-lets-encrypt/">
+                    https://www.troyhunt.com/on-the-perceived-value-ev-certs-cas-phishing-lets-encrypt/
+                </a>
+                
+                <aside class="notes">
+                    Sur decitre.fr nous utilisons certificats EV, fréquemment utilisés sites ecommerce. <hr/>
+                    permet d’afficher dans la barre d’URL verte avec le nom du détenteur. <hr />
+                    dans les 200€ / an selon les fournisseurs <hr />
+
+                    EV pas forcément utile et certains gros sites ne l'utilisent pas : Pour pousser plus : Article de Troy Hunt sur la valeur perçues des EV <hr />
+
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>Validation des certificats</h3>
+
+                <ul>
+                    <li>Validation en temps réel avec OCSP</li>
+                    <li>Côté serveur avec l'OCSP Stapling</li>
+                </ul>
+
+                <p class="legend acronyme">OCSP : Online Certificate Status Protocol</p>
+
+                <aside class="notes">
+                    Un certificat a durée de vie limitée dans le temps et peut être révoqué <hr />.
+
+                    C’est pourquoi, utilise le protocole OCSP  ===> permet de valider temps réel un certificat en effectuant requête auprès l'AC. <hr />
+
+                    validation client ==> requete synchrone ==> bloquante <hr />
+
+                    préférable d'utiliser cette validation côté serveur (OCSP stapling) <hr />
+
+                    reste à agrafer le résultat lors du handshake TLS. <hr />
+
+                    mécanisme important à mettre en place pour optimiser la connexion TLS. <hr />
+
+                    // TODO waterfall
 
                 </aside>
             </section>
@@ -260,8 +517,1009 @@
             <section>
                 <h2>Let's Encrypt</h2>
 
+                <ul>
+                    <li>Propose des certificats gratuits</li>
+                </ul>
 
+                <img src="images/https/letsencrypt.png" />
+
+                <aside class="notes">
+                    Les certificats ont un coût ce qui peut être un frein à l'adoption <hr />
+
+                    Fin 2015, Let’s encrypt est arrivé soutenus par différents acteurs du Web.  <hr />
+
+                    Leur objectif : généraliser l’utilisation des connexions sécurisées sur le Web en fournissant un outil capable de configurer très simplement des certificats gratuits. <hr />
+
+                    Fin juin, Let’s Encrypt a franchi la barre des 100 millions de certificats fournis. Et bonne nouvelle, en début d’année prochaine, il y aura la possibilité de configurer des certificats de type wildcard. <hr />
+
+                </aside>
             </section>
+        </section>
+
+         <section>
+             <section data-background="images/background/switch.jpg">
+             <!-- https://pixabay.com/fr/il-commutateur-r%C3%A9seau-1359518/ -->
+                <h2>Préparation de l'infra</h2>
+
+                <aside class="notes">
+                    <span class="time">13:00</span>
+                    Comme tout bon site d’e-commerce, nous gérons déjà du HTTPS. <hr />
+                    tunnel, identification et compte utilisateur ==> parties qui bénéficient déjà accès via connexion sécurisée. <hr />
+
+                    Donc du HTTPS, on sait faire et on en a sur une trentaine de page. <hr />
+
+                    Sauf que objectif ==> utiliser sur tout le site, soit plusieurs millions de page, tout en gérant fonctionnalités de cache de page que nous n’avons pas sur le panier, le tunnel ou sur le compte client. <hr />
+
+                    On va donc devoir adapter notre infra pour pouvoir gérer cette charge. <hr />
+
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>Notre infra, avant</h3>
+
+                <img src="images/infra/serveurs_avant.png">
+
+                <aside class="notes">
+                    Pour commencer ==> présenter l’infra de nos serveurs webs avant cette migration. <hr />
+
+                    Nous avons 3 fronts webs qui tournent sur debian jessie. <hr />
+
+                    Sur chacun des fronts web, nous avons : <hr />
+
+                    <ul>
+                        <li>apache écoute port 443 pour servir trafic HTTPS </li>
+
+                        <li>Varnish répond port 80 et qui sert trafic HTTP et configuré comme reverse proxy vers apache. </li>
+                    </ul>
+
+                    Pour répartir la charge entre 3 serveurs ==> avons choisi architecture suivante <hr />
+
+                    notre hébergeur propose mécanisme de load balancing utilisé pour le trafic HTTPS. <br />
+
+                    Par contre, pour trafic HTTP, pour éviter fragmentation du cache ==>  n’utilise qu’un seul varnish ==> dispatcher le trafic entre différents serveurs apache. <hr />
+
+                    Malheureusement pour notre future infra, Varnish ne permet pas d’établir de terminaison TLS et ne pourra donc être notre point d’entrée pour le trafic HTTPS <hr />
+
+
+                </aside>
+            </section>
+
+
+             <section>
+                <h3>Établir la terminaison TLS</h3>
+
+                 <ul>
+                     <li>Conserver le cache Varnish ?</li>
+                     <li>Trouver un outil pour gérer TLS
+                        <ul>
+                            <li>Hitch, NGINX, HAProxy</li>
+                        </ul>
+                     </li>
+                     <li>Et servir de reverse proxy</li>
+                 </ul>
+
+                <aside class="notes">
+                    A partir de cette architecture, quelles sont les possibilités ? <hr />
+
+                    Laisser tomber Varnish et basculer tout le trafic HTTPS directement vers apache ? <hr />
+
+                    Pas possible, car plus tous bénéfices et sécurité offerts par le serveur de cache (perfs constantes en cas de crawl sur url identique). <hr />
+
+                    Varnish propose outil appelé Hitch ==> gère terminaison TLS et fait office de reverse proxy vers Varnish. <hr />
+
+                    De notre côté, nous avions envisagé des solutions comme HA-Proxy ou NGINX.  <hr />
+
+                    Après discussion avec hébergeur, choix porté sur NGINX qui est l’outil qu’ils maîtrisaient le plus. <hr />
+
+
+                </aside>
+            </section>
+
+             <section>
+                 <h3>Notre infra, objectif</h3>
+
+                 <img src="images/infra/serveurs_apres.png">
+
+                 <aside class="notes">
+                     On va donc chaîner NGINX pour la terminaison TLS, Varnish pour le cache, et apache pour servir les pages du magento.  <hr />
+
+                     Ainsi ==> pas de régression sur la couverture des pages en cache lors de la bascule en tout HTTPS. <hr />
+
+                 </aside>
+             </section>
+
+             <section>
+                <h3>Modification de la configuration Varnish</h3>
+
+                 <p>Gestion par du cache par exclusion</p>
+
+                <pre><code>
+if ( req.url ~ "^/(index.php/)?(vente|liste_souhait|avis|tunnel
+    |compte_client|e-books/" ||
+ req.url ~ "^/liste_souhait$" ||
+ req.url ~ "^/contacts$" ||
+ req.url ~ "^/rechercher/" ||
+ req.url ~ "^/vente-flash/" ) {
+     return (pass);
+}
+                </code></pre>
+
+                <aside class="notes">
+                    Varnish va donc recevoir du trafic qu’il ne recevait pas auparavant  comme les appels effectués sur le panier ou notre tunnel de commande. <hr />
+
+                    Niveau volume de requête ==> devrait pas poser de problème par rapport au trafic sur le catalogue.  <hr />
+
+                    Par contre, problème avec la manière dont notre configuration varnish était conçue.  <hr />
+
+                    fonctionnement avec ce genre d'exclusion. <hr />
+
+                    En gros avec ce type  d'exclusion, si oubli une url ==>  risque de mettre en cache des pages avec des données clients. ==> moyen<hr />
+
+                </aside>
+            </section>
+
+             <section>
+                 <h3>Modification de la configuration Varnish</h3>
+
+                 <ul>
+                     <li>Réécriture de la configuration</li>
+                     <li>Inclusion au cas par cas</li>
+                     <li>Maintenabilité et sécurité</li>
+                 </ul>
+
+                 <aside class="notes">
+                     Plutôt qu’identifier tous les nouveaux cas qu’il va falloir exclure et en sachant que de toutes manières on en oubliera, ==> choisi de nettoyer configuration Varnish et de passer en mode inclusion au cas par cas. <hr />
+
+                     capable d'identifier types de page que nous souhaitons mettre en cache (produit, catégorie, résultats de recherche) ==> ajouté pour ces pages header spécifique décrivant chaque type. <hr />
+
+                     Dans Varnish, lorsqu'on récupère page du magento ==> met la page en cache en fonction de la présence du Header. <hr />
+
+
+                     Et voilà, on a désormais une configuration Varnish plus maintenable sans risque de mettre en cache des données clients. <hr />
+
+                     première étape que nous avons mise en production, avant de nous attaquer à la prochaine étape : les serveurs NGINX. <hr />
+
+                 </aside>
+             </section>
+
+             <section>
+                 <h3>Basculer HTTPS sur NGINX</h3>
+
+                 <img src="images/infra/mozilla_ssl_configuration_generator.png">
+
+                 <p><a href="https://mozilla.github.io/server-side-tls/ssl-config-generator/"><i class="fa fa-github"></i> https://mozilla.github.io/server-side-tls/ssl-config-generator</a></p>
+
+                 <aside class="notes">
+                     Avant de passer tout notre site en HTTPS, on va remplacer apache par nginx pour servir HTTPS.
+
+                     Pour préparer configuration NGINX ===>  utilisons l’outil de Mozilla de génération de configuration TLS.  <hr />
+
+                     On saisit type de serveur, version, version d’openssl utilisée, support des anciens navigateurs ==>  et voilà.  <hr />
+
+                     L’outil génère une configuration utilisable avec réglages de protocoles et algorithmes de chiffrement à jour ===> pour éviter utiliser une configuration avec une faille de sécurité connue. <hr />
+
+                     Ajoute le reverse proxy vers Varnish et c’est prêt.  <hr />
+
+
+
+                 </aside>
+             </section>
+
+             <section>
+                 <h3>Basculer HTTPS sur NGINX</h3>
+
+                <p>Valider le fonctionnement en production</p>
+
+                 <img src="images/infra/tests_tls.png" />
+
+
+                <aside class="notes">
+                    Pour tester, ok on a une preprod pour valider concept et fonctionnalité de nouvelle infrastructure. <hr />
+
+                    Mais bon, en prod ==> toujours des petites différences, certificats  pas les mêmes. et bref, si on se plante ==> nos clients ne pourront plus passer de commandes sur le site. <hr />
+
+                    Donc pour valider NGINX en prod ==> d’abord décidé de le configurer en écoutant le port 445 + laisser apache sur le 443. <hr />
+
+                    Avec tunnel ssh, + règle dans /etc/hosts ==>  facilement tester en local le bon fonctionnement. <hr />
+                </aside>
+             </section>
+
+             <section>
+                 <h3>Basculer HTTPS sur NGINX</h3>
+
+                 <p>Configuration et tests avec OpenSSL</p>
+
+                 <pre><code>echo '' | openssl s_client  -connect www.decitre.fr:443 -tlsextdebug</code></pre>
+
+                 <aside class="notes">
+                     Pour tester configuration TLS ==> nouveau meilleur ami : commande openssl_client ==> permettre d’avoir toutes infos sur la manière dont établit la terminaison TLS, éventuels problèmes de configuration. <hr />
+
+                     D’ailleurs, ça n’est pas parce que votre navigateur affiche beau cadenas vert que tout est OK ==> lancez cette commande pour valider votre configuration. <hr />
+
+
+                 </aside>
+             </section>
+
+
+             <section>
+                 <h3>Basculer HTTPS sur NGINX</h3>
+
+                 <ul>
+                     <li>Bascule front par front</li>
+                 </ul>
+
+                 <img src="images/infra/serveurs_apres.png">
+
+                 <aside class="notes">
+                     Une fois NGINX validé sur les 3 fronts en mode test, nous avons effectué la bascule, serveur par serveur. <hr />
+
+                     procédure simple <hr /> on sort serveur du load balancer (couper trafic entrant) <hr />
+                     désactive configuration HTTPS apache  <hr />
+                     modifie la conf NGINX pour écouter le port 443 <hr />
+                     réintègre  serveur. <hr />
+
+                     Comme pour varnish ==> décidé d’envoyer tout trafic sur un seul NGINX.  <hr />
+
+                     Et voilà, tous nos serveurs utilisent désormais NGINX pour les pages servies en HTTPS. <hr />
+                 </aside>
+             </section>
+
+             <section>
+                 <h3>SSL Labs</h3>
+
+                 <img src="images/infra/ssl_labs.png">
+
+                <aside class="notes">
+                    Pour valider configuration TLS ==> existe  très bon outil en ligne : SSL Labs.  <hr />
+
+                    va tester que certificat de vos sites et connexion TLS correctement configurés ==> en vérifiant différents paramètres, failles de sécurités connues et attribuer note globale. <hr />
+
+                    SSL Labs propose également API pour faire test. <hr />
+
+                    Nous passons par cette API pour avoir dans intégration continue des tests réguliers sur score SSL Labs ===>  détecter au plus tôt éventuelle dégradation de notre score. <hr />
+
+                </aside>
+             </section>
+         </section>
+
+        <section>
+            <section data-background="images/background/buttons.jpg">
+                <!-- https://pixabay.com/fr/la-technologie-anlagentechnik-plante-2147368/ -->
+                <h2>Basculer vers du full HTTPS</h2>
+
+                <aside class="notes">
+                    <span class="time">20:00</span>
+                    On est maintenant prêt pour basculer tout le trafic sur le NGINX sans faire exploser l’infra
+                </aside>
+            </section>
+
+            <section>
+                <h3>Préparer la migration</h3>
+
+
+                <p>S'inspirer des retours d'expérience</p>
+
+                <ul>
+                    <li>Yelp</li>
+                    <li>A Little Market</li>
+                    <li>Google</li>
+                    <li>Stack Overflow</li>
+                </ul>
+
+                <p class="legend">
+                    Liens disponibles sur <a href="https://srogier.fr/conferences/liens-migration-https.html">https://srogier.fr/conferences/liens-migration-https.html</a>
+                </p>
+
+                <aside class="notes">
+                    Ce qu’on a commencé à faire ==> chercher sur  Web différents retours d’expérience sur migrations similaires.  <hr />
+
+                    trouvé des articles des équipes de Yelp, a Little Market ou bien des ressources chez Google. Ces articles nous ont permis de voir les points communs dans les scénarios, d’identifier les problématiques.  <hr />
+
+                    Même si tout n’est pas adaptable ou faisable pour nos sites == > permet de commencer à réfléchir et aidé à concevoir notre scénario de migration. <hr />
+
+
+                </aside>
+            </section>
+
+
+
+            <section>
+                <h3>Détecter et corriger les Mixed Contents</h3>
+
+                <p>Contenu non sécurisé sur des pages en HTTPS</p>
+
+                <img src="images/infra/mixed_content.png">
+
+                <aside class="notes">
+                    Ca n’est pas tout de charger les pages en HTTPS ==> aussi faire en sorte que contenu appelé par ces pages soit également sécurisé. <hr />
+
+                    Si pas le cas ==> affaire à ce qu’on appelle du contenu mixte. Et chargement de ces contenus mixtes sera bloqué par navigateur. <hr />
+
+                    Pire, en plus du blocage ==>  perte votre superbe cadenas vert dans la barre d’url + à cet endroit alerte de sécurité.  <hr />
+
+                    Ce qui est moyennement rassurant pour nos clients. <hr />
+
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>Détecter et corriger les Mixed Contents</h3>
+
+                <div class="strong margin-bottom">Utiliser HTTPS pour : </div>
+                <ul>
+                    <li>les images</li>
+                    <li>les scripts externes</li>
+                    <li>les iframes</li>
+                    <li>...</li>
+                    <li>en fait, toutes les ressources appelées</li>
+                </ul>
+
+                <aside class="notes">
+                    faire le tour sur le site de toutes les ressources utilisées (images, scripts externes, iframe, etc.) et vérifier  pas d’appel en http. <hr />
+
+                    Si on en trouve, on change protocole en vérifiant bien-sûr que la ressource peut être utilisée avec https. <hr />
+
+                    Heureusement pour nous, toutes ces ressources ont pu être migrées. <hr />
+
+                </aside>
+            </section>
+
+
+
+            <section>
+                <h3>Détecter et corriger les Mixed Contents</h3>
+
+                <div class="margin-bottom">Si HTTPS n'est pas disponible ⇒ reverse proxy</div>
+                <pre><code class="nginx">
+server {
+    listen 443 ssl http2;
+    server_name aide-ebook.decitre.fr;
+
+    [...]
+
+    location / {
+        proxy_pass http://aide-numerique.decitre.fr;
+    }
+}
+                </code></pre>
+                <aside class="notes">
+
+                    également aide en ligne fournie par un de nos partenaires chargée via une iframe et hébergée sur github pages. <hr />
+
+                    Le souci c’est qu’avec ces pages, pas moyen d’avoir du TLS si comme dans notre cas on utilise CNAME pour nom de domaine <hr />
+
+                    et pas très envie de changer manière dont ces pages sont hébergées.  <hr />
+
+                     choisi de créer nouveau domaine, d’acheter certificat pour ce domaine et de faire un reverse proxy vers github pages. <br />
+
+                    Et voilà, problème réglé. <hr />
+
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>Détecter et corriger les Mixed Contents</h3>
+
+                <div class="margin-bottom">Nettoyage des contenus CMS</div>
+
+                <pre><code class="php">return preg_replace('~(src=[\'"]http):~', '$1s:', $cms);</code></pre>
+
+                <aside class="notes">
+                    Les scripts externes basculés ==>  script de migration pour contenus CMS afin de remplacer tous les src=”http://” par src=”https://”.  <hr />
+
+                    très bourrin, mais ça fonctionne. <hr />
+
+                    Par contre, rien ne dit qu’après nettoyage, il n’y ait pas de mauvaises saisies qui soient faites. <hr />
+
+                </aside>
+            </section>
+
+
+
+            <section>
+                <h3>CSP report</h3>
+
+                <ul>
+                    <li>Content Security Policy</li>
+                    <li>Filtrer les ressources utilisées sur le site</li>
+                </ul>
+
+                <aside class="notes">
+                    A priori, tout est bon. Mais quand  millions de pages ==> peut pas valider manuellement toutes ces pages et s’assurer pas de mixed content. <hr />
+
+                    En fait, pour aider détecter cela ==>  mécanisme appelé Content Security Policy (ou CSP). <hr />
+
+                    permet de définir des règles sur l’origine des ressources utilisées sur une page (que ce soit sur le domaine, le type de protocole et ce par type de ressource). <hr />
+
+                    Par exemple ==>  indiquer que les js de mon site doivent être https obligatoirement, appartenir aux domaines decitre.fr et google-analytics. <hr />
+
+                    Toutes autres ressources javascripts ne répondant pas à ces règles seront bloquées par le navigateur. <hr />
+
+                    C’est donc un mécanisme plutôt efficace. <hr />
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>CSP report</h3>
+
+                    <pre><code>
+Content-Security-Policy-Report-Only
+    default-src 'self' https:;
+    style-src 'unsafe-inline' 'self' https:;
+    script-src 'unsafe-inline' 'unsafe-eval' 'self'  https:;
+    img-src data: 'self' https:;
+    report-uri https://monapi/csp_report
+                    </code></pre>
+
+                <a class="fragment" href="https://github.com/nico3333fr/CSP-useful">
+                    <i class="fa fa-github"></i> https://github.com/nico3333fr/CSP-useful
+                </a>
+
+                <aside class="notes">
+                    Il existe un second mode dit Report-Only ==> tester les règles sans bloquer chargement des ressources + appelle une API en cas de détection ressource invalide. <hr />
+
+                    Voilà règle branchée via une header HTTP ==> si js,  image, ou iframe qui n’utilise pas HTTPS ==>  notifie l’api mentionnée dans la règle. <hr />
+
+                   Cette API ==> configuré pour qu’elle envoie ces erreurs vers notre compte New Relic  ===>  nous nous sommes fait monitoring des mixed content dans navigateurs de nos clients grâce à tout ça. <hr />
+
+                    Super !! Bon, en vrai, très bruyant. ==> En fait, extensions, pseudo antivirus et autres saletés installés sur postes clients ==> ont tendance à poser bouts de scripts un peu partout et donc sur nos pages ==> Scripts déclenchent une notification de CSP. <hr />
+
+                    Et au final, quasiment reçu que ce genre d’alertes. <hr />
+
+                    Si sujet vous intéresse, ===> dépôt de Nicolas Hoffmann sur le fonctionnement des CSP  ==>  recense et décrit ces alertes. <hr />
+
+                    Bref, pour nous beaucoup de bruit, mais permis tout de même de détecter un oubli au début de la migration. <hr />
+
+                    Finalement, un mois après ==> désactivé le report only de nos sites, car toutes ces fausses alertes rendaient analyse fastidieuse et inutile. <hr />
+
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>Anticiper les besoins en certificats</h3>
+
+                <div>
+                    <div class="span6">
+                        <p><strong>Avant</strong></p>
+                        <ul>
+                            <li>www.decitre.fr</li>
+                            <li>a.decitre-media.di-static.fr et b.decitre-media.di-static.fr</li>
+                        </ul>
+
+                    </div>
+
+                    <div class="span6">
+                        <p><strong>Après</strong></p>
+                        <ul>
+                            <li>www.decitre.fr</li>
+                            <li>decitre-media.di-static.fr</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <aside class="notes">
+                    Qui dit https dit certificat. ==>  lister les domaines utilisés et réfléchir à ceux qu’on va souhaiter utiliser en https.  <hr />
+
+                    Dans le cas de decitre.fr, nous utilisions 3 domaines : <hr />
+
+                    <ul>
+                        <li>www.decitre.fr (qui est l’url et base et qui utilise déjà une connexion sécurisée) </li>
+                        <li>a.decitre-media.di-static.fr et b.decitre-media.di-static.fr qui sont utilisées en HTTP uniquement pour charger les images du site. </li>
+                    </ul>
+
+                    On pourrait prendre un certificat wildcard pour ces domaines, mais attention la partie dynamique que sur un niveau ==>  pas conserver ces deux domaines tels quels. <hr />
+
+                    pris un certificat sur decitre.di-static + prévu de gérer des redirections pour envoyer les anciennes urls vers le nouveau domaine. <hr />
+
+                    également acheté des certificats pour tous autres domaines (api, decitrepro) qui n’avaient pas encore de HTTPS.  <hr />
+
+                    important de bien anticiper les domaines dont on aura besoin et impacts qu’il y a aura en cas de changement pour ne pas avoir trop de surprise avant la bascule.
+
+                    en plus en fonction du type de certificat, il peut mettre plusieurs jours pour être livré. <hr />
+
+
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>Adapter le Magento</h3>
+
+                <ul>
+                    <li>Suppression de redirections forcées vers HTTP</li>
+                    <li>Suppression d'URL en dur</li>
+                </ul>
+
+
+                <aside class="notes">
+
+                    dû faire aussi quelques modifications sur notre magento. <hr />
+
+                    Notamment pour supprimer code en dur qui forçait des redirections de https vers http sur pages du catalogue (je suppose faits à l’époque pour éviter duplication du contenu). <hr />
+
+                    également profité pour nettoyer quelques url hardcodées. <hr />
+
+                    Mais sinon, pas eu grand chose à modifier dans base de code. <hr />
+
+
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>Premiers tests en pré-production</h3>
+
+                <ul>
+                    <li>Certificats gratuits à volonté avec Let's Encrypt</li>
+                    <li>Validation du comportement global</li>
+                </ul>
+
+
+                <aside class="notes">
+                    Bien évidemment, nous avons testé en pré-production, le bon comportement du site en https. <hr />
+
+                    certificats nécessaires sont générés avec Let's Encrypt pour éviter les certificats autosignés et avoir gratuitement autant de certificats valides que nécessaires. <hr />
+
+                    permis de nous assurer du bon fonctionnement des pages, de valider par ex que toutes les url proposées (liens internes, canonical, ressources) étaient bien servies par https. <hr />
+
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>Éviter la duplication de contenu</h3>
+
+                <ul>
+                    <li>Contrôler les URL canoniques</li>
+                    <li>Redirections 301 vers les pages HTTPS</li>
+                </ul>
+
+                <aside class="notes">
+                    risque de notre migration ==> les moteurs de recherche détectent contenu dupliquée entre la page http et la page https.  <hr />
+
+                    valider que les canonical pointent bien vers version HTTPS. <hr />
+
+                    branche également dans apache une redirection systématique en 301 des pages http vers leurs équivalents https.  <hr />
+
+                    Attention aux redirects en cascade (webperf + moteur de recherche) <hr />
+
+                    Voilà pour la dernière étape de préparation de la bascule <hr />
+
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>Planification de la bascule</h3>
+
+                <ul>
+                    <li>Site par site</li>
+                    <li>4 migrations sur deux semaines</li>
+                </ul>
+
+                <aside class="notes">
+                    Infra : prête, code : prêt.  <hr />
+
+                    Tout est livré en production. reste plus qu’à planifier migration des sites. <hr />
+
+                    choisi de basculer store par store. <hr />
+
+                    D’abord sites non référencés, puis MB qui est indexée par google <hr />
+
+                    et enfin quelques jours après  histoire d’avoir un peu de recul par rapport aux précédentes migrations, quelques jours après decitre.fr . <hr />
+
+                    Au programme, 4 sites à basculer répartis sur un planning d’une quinzaine de jours. <hr />
+
+
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>Le jour J</h3>
+
+                <p>On déroule la checklist</p>
+
+                <aside class="notes">
+                    Le jour J, c’est très simple ==> déroule la checklist  établie et que je vais vous présenter. <hr />
+                </aside>
+            </section>
+
+            <section>
+                <h3>Le jour J</h3>
+
+                <ul class="no-style">
+                    <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Changement des URL</li>
+                    <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Vidage du cache</li>
+                </ul>
+
+                <aside class="notes">
+                    Dans un magento, url de base sont gérées dans le back office  site par site.  <hr />
+
+                    Donc première étape ==> remplace protocole http par https dans les url et sauvegarde. <hr />
+
+                    Deuxième étape ==> vide  tout notre cache applicatif pour éliminer éventuelles url en http encore en mémoire. <hr />
+                </aside>
+            </section>
+
+            <section>
+                <h3>Le jour J</h3>
+
+                <ul class="no-style">
+                    <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Activer les redirections</li>
+                </ul>
+
+
+                <aside class="notes">
+                    Ensuite, on active les redirections.  <hr />
+
+                    On pensait faire cette étape plus tard dans la migration, mais sur la mise en production de la première marque blanche, on s’est rendu compte que les fiches produits ne fonctionnaient pas quand on les appelait en http. <hr />
+
+                    problématique pour toutes les url externes vers nos pages faites en http. <hr />
+
+                    Bref, cette étape remontée plus haut dans la liste. <hr />
+
+                    Un vidage de Varnish plus tard et tout notre site utilise https et ce en moins de 3 minutes \o/ <hr />
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>Le jour J</h3>
+
+                <ul class="no-style">
+                    <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Nouvelle propriété dans Google Search Console</li>
+                </ul>
+
+                <aside class="notes">
+                    reste plus qu’à faire comprendre à google ce que nous avons fait et qu’il ferait bien de venir jeter un oeil à nos sites. <hr />
+
+                    google search console  ==> outil de suivi de l’indexation par google de nos sites. <hr />
+
+                    D’abord ==> crée une nouveau site dans google search console <hr />
+
+                    Dans ce site ==> on indique url en https de notre site (on remplace pas la version http). <hr />
+                </aside>
+            </section>
+
+            <section>
+                <h3>Le jour J</h3>
+
+                <ul class="no-style">
+                    <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Nettoyage robots.txt</li>
+                    <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Nouvelles sitemaps</li>
+                    <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Ajout du fichier de désaveu</li>
+                    <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Fetch And Render</li>
+                </ul>
+
+
+                <aside class="notes">
+
+                    s’assure ensuite que le robots.txt ne bloque pas crawl des pages en https. <hr />
+
+                    Si url dans le robots.txt en http ==> transforme en https (par exemple les sitemaps dans notre cas) <hr />
+
+                    En parlant de sitemaps ==> lance une régénération pour avoir une version https des liens ==> soumet cette nouvelle sitemap dans Google Search Console. <hr />
+
+                    également resoumis fichier de désaveu des url pour que la nouvelle propriété en ait connaissance. <hr />
+
+                    dernière étape ==> demande à google search console de faire un Fetch and Render avec crawl récursif sur page d’accueil. <hr />
+
+                    permet d’amorcer crawl sur notre nouvelle version du site. <hr />
+
+                    Et voilà, avec cette petite dizaine d’étape, en quelques minutes, on concrétise toutes les étapes de préparation précédemment effectuées. <hr />
+
+                </aside>
+            </section>
+        </section>
+        <section>
+            <section data-background="images/background/tunnel.jpg">
+                <h2>Après la migration</h2>
+
+               <aside class="notes">
+                   <span class="time">31:30</span>
+                   Tous nos sites sont en https ! Mais tout n’est pas encore terminé, il reste quelques optimisations à effectuer et des métriques à surveiller pour valider le bon déroulement de la migration. <hr />
+
+
+               </aside>
+            </section>
+
+            <section>
+                <h3>Les ratés</h3>
+
+                <ul>
+                    <li>Répartition du trafic dans Varnish</li>
+                    <li>Plus de IE8/WinXP :( </li>
+                </ul>
+
+                <aside class="notes">
+
+                    Suite changement conf dans Varnish, erreur dans attribution des trafic entre serveur apache <hr />
+                    Tout trafic hors GET vers 1 seul serveur. <hr />
+                    Segfault en cas de forte charge <hr />
+
+
+                    Plus lié à migration HTTPS, perdu compat sur les navigateurs IE8 sur WinXP <hr />
+                    Suites cryptographique différente Apache et nginx <hr />
+                    Suite à bascule plus possible d'avoir al terminaison TLS ==> plus de site<hr />
+                    Aurait pu être vu dans ssl labs <hr />
+                    Pas de CA dans GA pour ce navigateur ==> tant pis et au revoir.
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>Activer HTTP/2</h3>
+
+                <ul>
+                    <li>Compression des entêtes HTTP</li>
+                    <li>Push de contenu</li>
+                    <li>Multiplexage des requêtes</li>
+                </ul>
+
+
+                <!--
+                <img src="images/post_migration/http_2_multiplexing.png">
+
+                <p class="legend">Source : <a href="https://hpbn.co/http2/#request-and-response-multiplexing">https://hpbn.co/http2/#request-and-response-multiplexing</a> </p>
+-->
+
+                <aside class="notes">
+                    projet d'après ==> peut activer HTTP/2 <hr />
+
+                    dernière version du protocole HTTP ==> permet plusieurs améliorer les performances côté client : <hr />
+
+                    <ul>
+                        <li>la compression des entêtes HTTP  ==> améliorer temps de réponse en réduisant volume de données qui transitent sur réseau </li>
+                        <li>le push de contenu ==> peut lier à la réponse du contenu dont on sait qu'on aura besoin. </li>
+                        <li>le multiplexage des requêtes ==> A partir d'une seule connexion, navigateur peut envoyer et recevoir plusieurs messages en parallèle.  </li>
+                    </ul>
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>Activer HTTP/2</h3>
+
+                <pre><code class="diff">
+--- a/conf_nginx/www.decitre.fr.conf
++++ b/conf_nginx/www.decitre.fr.conf
+@@ -1,5 +1,5 @@
+ server {
+-    listen 443 ssl;
++    listen 443 ssl http2;
+
+     server_name www.decitre.fr;
+                    </code> </pre>
+
+                <aside class="notes">
+                    pour activer http/2 dans NGINX, c’est tout simple ===> 5 caractères, un reload de configuration et c’est fini. <hr />
+
+                    Sauf que, attention à la version d'OpenSSL utilisée !! <hr />
+
+                    Les navigateurs s'appuient sur ALPN  <hr />
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>Activer HTTP/2</h3>
+
+                <ul>
+                    <li>Utiliser ALPN</li>
+                    <li>Mettre à jour OpenSSL à partir des backports</li>
+                    <li>Recompiler NGINX</li>
+                </ul>
+
+
+                <aside class="notes">
+
+                    gère négociation des protocole lors du handshake TLS <hr />
+
+                    Donc pas d’ALPN, pas HTTP/2. <hr />
+
+                    problème c’est qu’ALPN est fourni avec openssl 1.0.2 <hr />
+                    notre version de debian ne fournit que la version 1.0.1k. <hr />
+
+                    échangé avec notre hébergeur et décidé d’installer backports d’openssl pour récupérer une version plus récente. <hr />
+                    dû également recompiler NGINX avec cette version de Openssl pour que tout fonctionne comme il faut. <hr />
+
+                    Et là c’est bon. <hr />
+
+                    si debian stable ==> pas de problème <hr />
+
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>Amélioration de la performance web ?</h3>
+
+                <ul>
+                    <li>Légère augmentation du temps de réponse (+0.15s soit +2%)</li>
+                </ul>
+
+                <aside class="notes">
+                    <span class="time">34:00</span>
+                    Sur performance web, malgré l’activation de HTTP/2 ==> légère augmentation suite à migration. <hr />
+
+                    semblerait Passer de n connexions à seulements 2 en TLS ne soit pas rentable (peut être grâce aux travaux de performances webs de décalage de chargement). <hr />
+
+                    testé de ne pas passer par le domaine spécifique pour les images et de mettre toutes nos ressources sur decitre.fr pour éviter la connexion supplémentaire. <hr />
+
+                    Mais au final, là non plus, pas de grosses améliorations visibles. <hr />
+
+                    conservé ce domaine pour le domaine, notamment pour ne pas trop dégrader les performances des navigateurs ne supportant pas HTTP/2. <hr />
+
+
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>Monitorer le trafic</h3>
+
+                <ul>
+                    <li>Surveillance quotidienne</li>
+                    <li>Répartition des codes retours HTTP</li>
+                </ul>
+
+
+                <aside class="notes">
+                    Pendant les semaines qui ont suivi la migration, ==> mesuré sur les sites la répartition des codes HTTP. <hr />
+
+                    permis de valider le bon fonctionnement des redirections et de contrôler que tout se passait bien. <hr />
+
+                    mesures ont aidés à surveiller un des effets les plus importants constatés : l’impact sur le crawl google <hr />
+                </aside>
+            </section>
+
+
+            <section>
+                <h3>Crawl Google</h3>
+
+                <img src="images/post_migration/crawl.png" />
+
+                <aside class="notes">
+                    parlé un peu plus tôt google search console et  propriété créée pour suivre indexation de la version https du site. <hr />
+
+                    dès le début de la migration ==>  bots Google ont commencé à parcourir notre site, sur un rythme que nous n’avions jamais encore vu. <hr />
+
+                    passé d’un parcours du bot de 100k pages par jour à une moyenne de + de 3 millions de pages par jour. <hr />
+
+                    Dans une moindre mesure, constate le même genre de hausse sur marques blanches indexées sur google.  <hr />
+
+                    Difficile de dire si création de la propriété dans google search console, le fetch and render lancé ou bien google qui a décidé de reparcourir le site suite aux redirections qui sont à l’origine de cette hausse du crawl. <hr />
+
+                    Mais dans tous les cas, elle est bien là et constatée sur les différents sites après leur migration. <hr />
+
+                    Récupérer les données qq part ==> une rétention de 90 jours, vous pourrez donc avoir un suivi sur le plus long terme. <hr />
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>Impact SEO</h3>
+
+                <p>Nombre de sessions venant de Google équivalentes</p>
+
+                <div>
+                    <div class="span6">
+                        <img src="images/post_migration/ga_mai.png">
+
+                        <p class="legend">mai 2016 vs mai 2017</p>
+                    </div>
+
+                    <div class="span6 fragment">
+                        <img src="images/post_migration/ga_juillet.png">
+
+                        <p class="legend">juillet 2016 vs juillet 2017</p>
+                        <p class="legend">hausse de 40 %</p>
+                    </div>
+
+                </div>
+
+
+                <aside class="notes">
+                    <span class="time">37:00</span>
+                    Google nous crawle  plus, mais y a-t-il eu un impact sur le trafic du site ? <hr />
+
+                    en orange le nb de session venant de google en 2016 <hr />
+                    en bleu : 2017 <hr />
+
+                    Nous avons fait la bascule à la fin du mois d’avril. De janvier 2017 jusqu’à mi mai, nous étions sur des performances équivalentes en comparaison par rapport à l’année précédente en ce qui concerne le trafic issu des moteurs de recherche. <hr />
+
+                    [CLICK] <hr />
+
+                    Par contre, depuis mi-mai, nous constatons une forte progression de ce trafic. <hr />
+
+                    Dans Google Analytics, on peut voire une hausse de 40% du nombre de session venant de Google par rapport à l’année précédente. Difficile de définir la source de cette hausse, mais par rapport aux différentes actions plus tôt, la bascule HTTPS est celle qui paraît être celle à l’origine de ce surplus de trafic. <hr />
+
+                </aside>
+            </section>
+
+            <section>
+                <h3>Pour aller plus loin</h3>
+
+                <ul>
+                    <li>HSTS</li>
+                    <li>TLS 1.3</li>
+                </ul>
+
+
+               <aside class="notes">
+                   HSTS (HTTP Strict Transport Security) est un mécanisme qui permet graĉe à un Header HTTP de dire au client qu’il doit communiquer avec le serveur de manière sécurisée uniquement. Ainsi le navigateur passera de lui-même tout lien de HTTP à HTTPS. <hr />
+                   Evite de faire le redirect côté serveur <hr />
+
+
+                   Une fois validé et publié, utiliser TLS 1.3 sur nos serveurs. <hr />
+                   L’une des promesses de TLS 1.3 est revoir la manière dont le client va initialiser la connexion en l'init TLS à un seul A/R pour premier cxion <hr />
+                   Et même à 0 AR en cas de de réutilisation de session <hr />
+                   et aussi de proposer des suites cryptographiques plus robustes. <hr />
+                   Il faudra donc qu’on surveille dans les prochains mois l'évolution de la prochaine version de TLS. <hr />
+
+               </aside>
+            </section>
+
+        </section>
+
+        <section data-background="images/background/intro.jpg">
+            <div class="block-title block-title--main">
+                <h3>Allez-y !</h3>
+
+                <img src="images/conclusion/https.png">
+
+            </div>
+
+
+
+            <aside class="notes">
+
+                Voilà pour le retour de notre migration vers du tout HTTPS. Alors oui, au final, l’opération s’est résumé à ça : ajouter un s à nos url. <hr />
+
+                Mais pour, ce chantier s’est étalé de fin janvier à fin avril pour la mise en production de decitre.fr. Chez nous, la migration de la plateforme e-commerce a été faite en un peu plus de 15JH. Cela s’explique notamment par les différentes étapes sur l’infra. <hr />
+
+                Nous avons également fait cette bascule sur notre outil de recherche bibliographique, qui a une stack plus simple, et qu’on a pu migrer en un 1JH. Tout dépend de la complexité et la criticité des projets.  <hr />
+
+                Alors certes, c’est une intervention qui peut être risquée, mais bien préparée et bien anticipée, on permet de limiter ces risques, avec au final pas mal de gains à la fin. <hr />
+
+                J’espère en tout cas que notre retour d’expérience pourra convaincre ceux qui parmi vous n’ont pas encore franchi ce pas. <hr />
+
+                De toutes manières, Navigateurs et moteurs de recherche sauront vous y inciter. <hr />
+
+
+            </aside>
+        </section>
+
+        <section data-background="images/background/intro.jpg">
+
+            <div class="block-title">
+                <h2>Merci pour votre attention</h2>
+
+                <h3>Des questions ?</h3>
+
+                <p style="margin-top: 50px;">Retrouvez les différentes sources et outils mentionnés sur <br /> <a href="https://srogier.fr/conferences/liens-migration-https.html">https://srogier.fr/conferences/liens-migration-https.html</a></p>
+                <a href="https://twitter.com/srogier"><i class="fa fa-twitter"></i>@srogier</a>
+            </div>
+
+        </section>
+
+        <section>
+            <h3>Visuels utilisés</h3>
+
+            <ul>
+                <li><a href="https://pixabay.com/fr/château-sécurité-cadenas-sûr-métal-838352/">https://pixabay.com/fr/château-sécurité-cadenas-sûr-métal-838352/</a></li>
+                <li><a href="https://pixabay.com/fr/politique-de-confidentialité-sécurité-2499720/">https://pixabay.com/fr/politique-de-confidentialité-sécurité-2499720/</a></li>
+                <li><a href="https://pixabay.com/fr/il-commutateur-réseau-1359518/">https://pixabay.com/fr/il-commutateur-réseau-1359518/</a></li>
+                <li><a href="https://pixabay.com/fr/la-technologie-anlagentechnik-plante-2147368/">https://pixabay.com/fr/la-technologie-anlagentechnik-plante-2147368/</a></li>
+                <li><a href="https://www.pexels.com/photo/grayscale-photo-of-man-walking-in-hole-172738/">https://www.pexels.com/photo/grayscale-photo-of-man-walking-in-hole-172738/</a></li>
+            </ul>
         </section>
     </div>
 </div>
@@ -274,13 +1532,13 @@
     // - https://github.com/hakimel/reveal.js#configuration
     // - https://github.com/hakimel/reveal.js#dependencies
     Reveal.initialize({
-        controls: true,
+        controls: false,
         progress: true,
         history: true,
         center: true,
 //                slideNumber: true,
 
-        transition: 'slide', // none/fade/slide/convex/concave/zoom
+        transition: 'none', // none/fade/slide/convex/concave/zoom
         dependencies: [
             { src: 'plugin/markdown/marked.js' },
             { src: 'plugin/markdown/markdown.js' },
