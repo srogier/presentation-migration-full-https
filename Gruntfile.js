@@ -15,13 +15,10 @@ module.exports = function(grunt) {
 				' * http://lab.hakim.se/reveal-js\n' +
 				' * MIT licensed\n' +
 				' *\n' +
-				' * Copyright (C) 2017 Hakim El Hattab, http://hakim.se\n' +
+				' * Copyright (C) 2016 Hakim El Hattab, http://hakim.se\n' +
 				' */'
 		},
 
-		qunit: {
-			files: [ 'test/*.html' ]
-		},
 
 		uglify: {
 			options: {
@@ -44,7 +41,7 @@ module.exports = function(grunt) {
 					{
 						expand: true,
 						cwd: 'css/theme/source',
-						src: ['*.sass', '*.scss'],
+						src: ['*.scss'],
 						dest: 'css/theme',
 						ext: '.css'
 					}
@@ -122,12 +119,7 @@ module.exports = function(grunt) {
 				tasks: 'js'
 			},
 			theme: {
-				files: [
-					'css/theme/source/*.sass',
-					'css/theme/source/*.scss',
-					'css/theme/template/*.sass',
-					'css/theme/template/*.scss'
-				],
+				files: [ 'css/theme/source/*.scss', 'css/theme/template/*.scss' ],
 				tasks: 'css-themes'
 			},
 			css: {
@@ -154,7 +146,6 @@ module.exports = function(grunt) {
 	});
 
 	// Dependencies
-	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
 	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
@@ -169,7 +160,7 @@ module.exports = function(grunt) {
 	grunt.registerTask( 'default', [ 'css', 'js' ] );
 
 	// JS task
-	grunt.registerTask( 'js', [ 'jshint', 'uglify', 'qunit' ] );
+	grunt.registerTask( 'js', [ 'jshint', 'uglify' ] );
 
 	// Theme CSS
 	grunt.registerTask( 'css-themes', [ 'sass:themes' ] );
@@ -186,7 +177,5 @@ module.exports = function(grunt) {
 	// Serve presentation locally
 	grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
 
-	// Run tests
-	grunt.registerTask( 'test', [ 'jshint', 'qunit' ] );
 
 };
