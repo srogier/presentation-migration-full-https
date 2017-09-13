@@ -1,1 +1,1 @@
-Lightning Talk AFUP Lyon - 23 mars 2016
+On a migré nos sites en full HTTPS ! - Forum PHP 2017
