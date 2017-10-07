@@ -7,7 +7,7 @@
 
     <title>On a migré nos sites en full HTTPS ! - Forum PHP 2017</title>
 
-    <meta name="description" content="On a migré nos sites en full HTTPS ! - AFUP Lyon">
+    <meta name="description" content="On a migré nos sites en full HTTPS ! - Forum PHP 2017">
 
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/srogier.css" id="theme">
@@ -32,7 +32,7 @@
         <section data-background="images/background/intro.jpg">
             <div class="block-title block-title--main">
                 <h1>On a migré nos sites en full HTTPS !</h1>
-                <h3>AFUP Lyon - 26 septembre 2017</h3>
+                <h3>Forum PHP 2017 - 26 octobre 2017</h3>
                 <a href="https://twitter.com/srogier"><i class="fa fa-twitter"></i>@srogier</a> /
                 <a href="https://github.com/srogier"><i class="fa fa-github"></i> srogier</a>
             </div>
@@ -351,6 +351,8 @@
 
                 <img src="images/https/tls_2.png">
 
+                <div>2 A/R pour initialiser une connexion</div>
+
                 <aside class="notes">
                     Lors de ces échanges, le navigateur et le serveur se mettent d'accord sur les protocoles, algorithmes de chiffrement, valide le certificat, et échange des clés de chiffrement qui serviront à chiffrer les données échangées. <hr />
 
@@ -362,6 +364,8 @@
                 <h3>TLS en détail</h3>
 
                 <img src="images/https/tls_restauration.png">
+
+                <div>1 A/R pour restaurer une connexion</div>
 
                 <aside class="notes">
 
@@ -406,7 +410,7 @@
                 </ul>
 
                 <aside class="notes">
-                    certificat ==> document électronique - norme X.509
+                    pour authentifier le serveur ==> certificat ==> document électronique - norme X.509 <hr />
 
                     délivré et signé par un tiers de confiance : l’autorité de certification. <hr />
 
@@ -453,34 +457,21 @@
                     </ul>
                 </div>
 
-                <aside class="notes">
-                    existe différents types de certificats, où les informations du détenteur sont contrôlées de manière plus ou moins poussée.  <hr />
-
-                    En gros plus on a de contrôles, + certificats offrent garanties importantes et + certificats sont chers. <hr />
-
-                    Un certificat peut également être multidomaine, ou bien de type wildcard (portée sur tous les sous-domaines directs)<hr />
-
-                </aside>
-            </section>
-
-
-            <section>
-                <h3>Typologie d'un certificat</h3>
-
-                <img src="images/https/decitre.png">
-
-                <div class="legend margin-bottom">Certificat EV présent sur www.decitre.fr</div>
+                <div class="span12">
+                <img src="images/https/decitre.png"> <br />
 
                 <a class="smaller" href="https://www.troyhunt.com/on-the-perceived-value-ev-certs-cas-phishing-lets-encrypt/">
                     https://www.troyhunt.com/on-the-perceived-value-ev-certs-cas-phishing-lets-encrypt/
                 </a>
-                
+                </div>
                 <aside class="notes">
+                    existe différents types de certificats, où les informations du détenteur sont contrôlées de manière plus ou moins poussée.  <hr />
+
                     Sur decitre.fr nous utilisons certificats EV, fréquemment utilisés sites ecommerce. <hr/>
-                    permet d’afficher dans la barre d’URL verte avec le nom du détenteur. <hr />
+
                     dans les 200€ / an selon les fournisseurs <hr />
 
-                    EV pas forcément utile et certains gros sites ne l'utilisent pas : Pour pousser plus : Article de Troy Hunt sur la valeur perçues des EV <hr />
+                    débat sur l'utilité des EV,  Pour pousser plus : Article de Troy Hunt sur la valeur perçues des EV <hr />
 
                 </aside>
             </section>
@@ -738,6 +729,10 @@ if ( req.url ~ "^/(index.php/)?(vente|liste_souhait|avis|tunnel
 
                      D’ailleurs, ça n’est pas parce que votre navigateur affiche beau cadenas vert que tout est OK ==> lancez cette commande pour valider votre configuration. <hr />
 
+                     Partie la plus longue (car une des plus critiques de la migration) <hr />
+
+                     bcp de tests de configuration + échange avec l'hébergeur pour arriver à une configuration sans erreurs <hr />
+
 
                  </aside>
              </section>
@@ -989,7 +984,7 @@ Content-Security-Policy-Report-Only
                         <p><strong>Avant</strong></p>
                         <ul>
                             <li>www.decitre.fr</li>
-                            <li>a.decitre-media.di-static.fr et b.decitre-media.di-static.fr</li>
+                            <li>a.decitre.di-static.com et b.decitre.di-static.com</li>
                         </ul>
 
                     </div>
@@ -998,7 +993,7 @@ Content-Security-Policy-Report-Only
                         <p><strong>Après</strong></p>
                         <ul>
                             <li>www.decitre.fr</li>
-                            <li>decitre-media.di-static.fr</li>
+                            <li>decitre.di-static.com</li>
                         </ul>
                     </div>
                 </div>
@@ -1006,22 +1001,22 @@ Content-Security-Policy-Report-Only
                 <aside class="notes">
                     Qui dit https dit certificat. ==>  lister les domaines utilisés et réfléchir à ceux qu’on va souhaiter utiliser en https.  <hr />
 
+                    important de bien anticiper les domaines dont on aura besoin et impacts qu’il y a aura en cas de changement pour ne pas avoir trop de surprise avant la bascule. <hr />
+
+                    en plus en fonction du type de certificat, il peut mettre plusieurs jours pour être livré. <hr />
+
                     Dans le cas de decitre.fr, nous utilisions 3 domaines : <hr />
 
                     <ul>
                         <li>www.decitre.fr (qui est l’url et base et qui utilise déjà une connexion sécurisée) </li>
-                        <li>a.decitre-media.di-static.fr et b.decitre-media.di-static.fr qui sont utilisées en HTTP uniquement pour charger les images du site. </li>
+                        <li>deux autres utilisées en HTTP uniquement pour charger les images du site. </li>
                     </ul>
 
-                    On pourrait prendre un certificat wildcard pour ces domaines, mais attention la partie dynamique que sur un niveau ==>  pas conserver ces deux domaines tels quels. <hr />
+                    choisi de ne pas conserver ces deux domaines tels quels. <hr />
 
                     pris un certificat sur decitre.di-static + prévu de gérer des redirections pour envoyer les anciennes urls vers le nouveau domaine. <hr />
 
-                    également acheté des certificats pour tous autres domaines (api, decitrepro) qui n’avaient pas encore de HTTPS.  <hr />
-
-                    important de bien anticiper les domaines dont on aura besoin et impacts qu’il y a aura en cas de changement pour ne pas avoir trop de surprise avant la bascule.
-
-                    en plus en fonction du type de certificat, il peut mettre plusieurs jours pour être livré. <hr />
+                    également acheté des certificats pour tous autres domaines (api, decitrepro) qui n’avaient pas encore de HTTPS.
 
 
                 </aside>
@@ -1194,7 +1189,7 @@ Content-Security-Policy-Report-Only
                 <ul class="no-style">
                     <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Nettoyage robots.txt</li>
                     <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Nouvelles sitemaps</li>
-                    <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Ajout du fichier de désaveu</li>
+                    <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Portage de la configuration</li>
                     <li><i class="fa fa-check-square-o" aria-hidden="true"></i> Fetch And Render</li>
                 </ul>
 
@@ -1207,7 +1202,7 @@ Content-Security-Policy-Report-Only
 
                     En parlant de sitemaps ==> lance une régénération pour avoir une version https des liens ==> soumet cette nouvelle sitemap dans Google Search Console. <hr />
 
-                    également resoumis fichier de désaveu des url pour que la nouvelle propriété en ait connaissance. <hr />
+                    récupération de la configuration du site HTTP. <hr />
 
                     dernière étape ==> demande à google search console de faire un Fetch and Render avec crawl récursif sur page d’accueil. <hr />
 
@@ -1311,6 +1306,7 @@ Content-Security-Policy-Report-Only
             <section>
                 <h3>Activer HTTP/2</h3>
 
+                <p>Pour Debian 8</p>
                 <ul>
                     <li>Utiliser ALPN</li>
                     <li>Mettre à jour OpenSSL à partir des backports</li>
@@ -1320,7 +1316,9 @@ Content-Security-Policy-Report-Only
 
                 <aside class="notes">
 
-                    gère négociation des protocole lors du handshake TLS <hr />
+                    pb particulier à notre infra ==> si debian stable ==> pas de problème <hr />
+
+                    ALPN gère négociation des protocole lors du handshake TLS <hr />
 
                     Donc pas d’ALPN, pas HTTP/2. <hr />
 
@@ -1332,7 +1330,7 @@ Content-Security-Policy-Report-Only
 
                     Et là c’est bon. <hr />
 
-                    si debian stable ==> pas de problème <hr />
+
 
 
                 </aside>
@@ -1342,7 +1340,7 @@ Content-Security-Policy-Report-Only
                 <h3>Amélioration de la performance web ?</h3>
 
                 <ul>
-                    <li>Légère augmentation du temps de réponse (+0.15s soit +2%)</li>
+                    <li>Légère augmentation du temps de réponse</li>
                 </ul>
 
                 <aside class="notes">
@@ -1395,9 +1393,6 @@ Content-Security-Policy-Report-Only
 
                     Dans une moindre mesure, constate le même genre de hausse sur marques blanches indexées sur google.  <hr />
 
-                    Difficile de dire si création de la propriété dans google search console, le fetch and render lancé ou bien google qui a décidé de reparcourir le site suite aux redirections qui sont à l’origine de cette hausse du crawl. <hr />
-
-                    Mais dans tous les cas, elle est bien là et constatée sur les différents sites après leur migration. <hr />
 
                     Récupérer les données qq part ==> une rétention de 90 jours, vous pourrez donc avoir un suivi sur le plus long terme. <hr />
 
@@ -1439,7 +1434,7 @@ Content-Security-Policy-Report-Only
 
                     Par contre, depuis mi-mai, nous constatons une forte progression de ce trafic. <hr />
 
-                    Dans Google Analytics, on peut voire une hausse de 40% du nombre de session venant de Google par rapport à l’année précédente. Difficile de définir la source de cette hausse, mais par rapport aux différentes actions plus tôt, la bascule HTTPS est celle qui paraît être celle à l’origine de ce surplus de trafic. <hr />
+                    Dans Google Analytics, on peut voire une hausse de 40% du nombre de session venant de Google par rapport à l’année précédente. Même si on a eu des chantiers SEO d'optimisation de contenu sur la même période, par rapport au volume, la bascule HTTPS semble être à l’origine de ce surplus de trafic. <hr />
 
                 </aside>
             </section>
