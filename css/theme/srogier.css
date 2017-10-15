@@ -324,6 +324,15 @@ body {
   .reveal .legend {
     font-size: 75%;
     font-style: italic; }
+  .reveal blockquote {
+    text-align: left;
+    padding: 20px;
+    font-style: normal;
+    background: #eee; }
+    .reveal blockquote .author {
+      margin-top: 1em;
+      text-align: right;
+      font-style: italic; }
 
 section[data-background] > h1,
 section[data-background] > h2,

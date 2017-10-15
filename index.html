@@ -50,7 +50,7 @@
 
                     Et voilà comment on fait pour remonter un projet de migration vers du full HTTPS en haut de la pile des choses à faire. <hr />
 
-                    Je vais donc vous présenter notre migration, comment elle s’est déroulée et les effets que nous avons constatés. <hr />
+                    Je vais donc vous présenter pourquoi HTTPS est important, notre migration, les différentes étapes qui l'ont constituée et les effets que nous avons constatés. <hr />
 
                 </aside>
             </section>
@@ -135,7 +135,7 @@
 
 
                 <aside class="notes">
-                    HTTPS (Hypertext Transfer Protocole Secure) : combinaison de HTTP avec en amont une étape de chiffrement fournies par les protocoles SSL + TLS. <hr />
+                    HTTPS  : combinaison de HTTP avec en amont une étape de chiffrement fournies par les protocoles SSL + TLS. <hr />
                     permet de garantir 3 choses <hr />
 
                     <ul>
@@ -284,13 +284,10 @@
                 <aside class="notes">
                     milieu des années 90, Netscape a commencé à développer protocole SSL  ==> but de créer protocole de sécurisation des échanges de données. <hr />
 
-                    // TODO alléger :
-                    première version de SSL pas publiée à cause de failles de sécurité. <hr />
-                    La version 2 sort 1995, rapidement suivie en 1996 par la version 3 qui corrige des failles de la version précédente. <hr />
-
                     [CLICK] <hr />
 
                     En 1999, un organisme independant l'IETF propose TLS , ==>  standard basé sur les spec de SSL. <hr />
+
                     Version 1.3 qui pour le moment est à l’état de brouillon. <hr />
 
                     Au fil du temps et découverte différentes failles de sécurité (POODLE, Heartbleed), versions anciennes de SSL dépréciées. Donc ne les utilisez plus.<hr />
@@ -371,9 +368,7 @@
 
                     Il existe des mécanismes pour raccourcir cette poignées de main. <hr />
 
-                    Le client peut envoyer un identifier d'une précédente session lors de son ClientHEllo. <hr />
-
-                    Si la session correspondant est encore présente sur le serveur, elle peut être réutilisée.<hr />
+                    On peut réutiliser une connexion précédemment utlisée et ainsi économiser un A/R.<hr />
 
                 </aside>
             </section>
@@ -499,9 +494,6 @@
                     reste à agrafer le résultat lors du handshake TLS. <hr />
 
                     mécanisme important à mettre en place pour optimiser la connexion TLS. <hr />
-
-                    // TODO waterfall
-
                 </aside>
             </section>
 
@@ -556,6 +548,10 @@
                     Pour commencer ==> présenter l’infra de nos serveurs webs avant cette migration. <hr />
 
                     Nous avons 3 fronts webs qui tournent sur debian jessie. <hr />
+
+                    Pas d'admin sys chez nous, que des devs.  <hr />
+
+                    notre infra de prod est gérée par notre hebergeur, même si nous avons la main sur certains points de configuration <hr />
 
                     Sur chacun des fronts web, nous avons : <hr />
 
@@ -729,7 +725,7 @@ if ( req.url ~ "^/(index.php/)?(vente|liste_souhait|avis|tunnel
 
                      D’ailleurs, ça n’est pas parce que votre navigateur affiche beau cadenas vert que tout est OK ==> lancez cette commande pour valider votre configuration. <hr />
 
-                     Partie la plus longue (car une des plus critiques de la migration) <hr />
+                     Partie la plus longue en terme de préparation (car une des plus critiques de la migration) <hr />
 
                      bcp de tests de configuration + échange avec l'hébergeur pour arriver à une configuration sans erreurs <hr />
 
@@ -1018,7 +1014,6 @@ Content-Security-Policy-Report-Only
 
                     également acheté des certificats pour tous autres domaines (api, decitrepro) qui n’avaient pas encore de HTTPS.
 
-
                 </aside>
             </section>
 
@@ -1041,8 +1036,6 @@ Content-Security-Policy-Report-Only
                     également profité pour nettoyer quelques url hardcodées. <hr />
 
                     Mais sinon, pas eu grand chose à modifier dans base de code. <hr />
-
-
 
                 </aside>
             </section>
@@ -1111,6 +1104,7 @@ Content-Security-Policy-Report-Only
 
                     Au programme, 4 sites à basculer répartis sur un planning d’une quinzaine de jours. <hr />
 
+                    Côté utilisateur, que ce soit nos clients ou nos collègues, tout se passera de manière transparente grâce aux redirections.<hr />
 
                 </aside>
             </section>
@@ -1259,12 +1253,6 @@ Content-Security-Policy-Report-Only
                 </ul>
 
 
-                <!--
-                <img src="images/post_migration/http_2_multiplexing.png">
-
-                <p class="legend">Source : <a href="https://hpbn.co/http2/#request-and-response-multiplexing">https://hpbn.co/http2/#request-and-response-multiplexing</a> </p>
--->
-
                 <aside class="notes">
                     projet d'après ==> peut activer HTTP/2 <hr />
 
@@ -1316,8 +1304,6 @@ Content-Security-Policy-Report-Only
 
                 <aside class="notes">
 
-                    pb particulier à notre infra ==> si debian stable ==> pas de problème <hr />
-
                     ALPN gère négociation des protocole lors du handshake TLS <hr />
 
                     Donc pas d’ALPN, pas HTTP/2. <hr />
@@ -1325,13 +1311,14 @@ Content-Security-Policy-Report-Only
                     problème c’est qu’ALPN est fourni avec openssl 1.0.2 <hr />
                     notre version de debian ne fournit que la version 1.0.1k. <hr />
 
+                    pb particulier à notre infra ==> si debian stable ==> pas de problème <hr />
+
                     échangé avec notre hébergeur et décidé d’installer backports d’openssl pour récupérer une version plus récente. <hr />
                     dû également recompiler NGINX avec cette version de Openssl pour que tout fonctionne comme il faut. <hr />
 
                     Et là c’est bon. <hr />
 
-
-
+                    Pas mal de temps passé sur cette configuration HTTP/2, le temps de comprendre le comportement des navigateurs et leur utilisation de ALPN.
 
                 </aside>
             </section>
@@ -1434,9 +1421,40 @@ Content-Security-Policy-Report-Only
 
                     Par contre, depuis mi-mai, nous constatons une forte progression de ce trafic. <hr />
 
-                    Dans Google Analytics, on peut voire une hausse de 40% du nombre de session venant de Google par rapport à l’année précédente. Même si on a eu des chantiers SEO d'optimisation de contenu sur la même période, par rapport au volume, la bascule HTTPS semble être à l’origine de ce surplus de trafic. <hr />
+                    Dans Google Analytics, on peut voire une hausse de 40% du nombre de session venant de Google par rapport à l’année précédente. <hr />
+
+                    Même si on a eu des chantiers SEO d'optimisation de contenu sur la même période, par rapport au volume, la bascule HTTPS semble être à l’origine de ce surplus de trafic. <hr />
 
                 </aside>
+            </section>
+
+            <section>
+                <h3>TLS, c'est lent ?</h3>
+
+                <blockquote>
+                    TLS has exactly one performance problem: <br />
+                    it is not used widely enough.<br />
+                    Everything else can be optimized.
+
+                    <div class="author">Ilya Grigorik</div>
+                </blockquote>
+
+                <p><a href="https://istlsfastyet.com/">https://istlsfastyet.com/</a></p>
+
+                <aside class="notes">
+                    On entend souvent dire que mettre du TLS partout ça coûte cher en performance. <hr />
+
+                    Alors oui, le serveur qui gère le NGINX a vu sa conso CPU augmenter de qq pct lorsqu'on a migré, mais c'est normal : il a reçu tout notre traffic entrant. <hr />
+
+                    Et il doit gérer le trafic supplémentaire suite au crawl et l'impact sur le SEO : donc rien d'anormal <hr />
+
+                    donc hausse légère, normale, rien d'important qui remette en cause nos choix d'infra. <hr />
+
+                    Si vous avez besoin d'un argumentaire détaillé : site en lien <hr />
+
+
+                </aside>
+
             </section>
 
             <section>
@@ -1495,11 +1513,10 @@ Content-Security-Policy-Report-Only
         <section data-background="images/background/intro.jpg">
 
             <div class="block-title">
-                <h2>Merci pour votre attention</h2>
-
                 <h3>Des questions ?</h3>
 
-                <p style="margin-top: 50px;">Retrouvez les différentes sources et outils mentionnés sur <br /> <a href="https://srogier.fr/conferences/liens-migration-https.html">https://srogier.fr/conferences/liens-migration-https.html</a></p>
+                <p style="margin-top: 50px;"><a href="https://joind.in/talk/70ae4">https://joind.in/talk/70ae4</a> </p>
+                <p style="margin-top: 50px;">Retrouvez les différentes sources et outils mentionnés <br /> <a href="https://srogier.fr/conferences/liens-migration-https.html">https://srogier.fr/conferences/liens-migration-https.html</a></p>
                 <a href="https://twitter.com/srogier"><i class="fa fa-twitter"></i>@srogier</a>
             </div>
 
