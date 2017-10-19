@@ -782,7 +782,9 @@ if ( req.url ~ "^/(index.php/)?(vente|liste_souhait|avis|tunnel
 
                 <aside class="notes">
                     <span class="time">20:00</span>
-                    On est maintenant prêt pour basculer tout le trafic sur le NGINX sans faire exploser l’infra
+                    On est maintenant prêt pour basculer à basculer nos sites en HTTPS sans faire exploser l’infra <hr />
+
+                    Il ne reste plus qu'à préparer les différentes étapes de la migration <hr />
                 </aside>
             </section>
 
@@ -922,7 +924,7 @@ server {
                 <aside class="notes">
                     A priori, tout est bon. Mais quand  millions de pages ==> peut pas valider manuellement toutes ces pages et s’assurer pas de mixed content. <hr />
 
-                    En fait, pour aider détecter cela ==>  mécanisme appelé Content Security Policy (ou CSP). <hr />
+                    En fait, pour aider détecter cela il existe les CSP. <hr />
 
                     permet de définir des règles sur l’origine des ressources utilisées sur une page (que ce soit sur le domaine, le type de protocole et ce par type de ressource). <hr />
 
@@ -997,9 +999,11 @@ Content-Security-Policy-Report-Only
                 <aside class="notes">
                     Qui dit https dit certificat. ==>  lister les domaines utilisés et réfléchir à ceux qu’on va souhaiter utiliser en https.  <hr />
 
-                    important de bien anticiper les domaines dont on aura besoin et impacts qu’il y a aura en cas de changement pour ne pas avoir trop de surprise avant la bascule. <hr />
+                    important de bien lister les domaines utilisés ==> anticiper ceux besoin <hr />
 
-                    en plus en fonction du type de certificat, il peut mettre plusieurs jours pour être livré. <hr />
+                    en fonction du type de certificat, il peut mettre plusieurs jours pour être livré. <hr />
+
+                    important pour ne pas avoir trop de surprise avant la bascule. <hr />
 
                     Dans le cas de decitre.fr, nous utilisions 3 domaines : <hr />
 
@@ -1010,7 +1014,7 @@ Content-Security-Policy-Report-Only
 
                     choisi de ne pas conserver ces deux domaines tels quels. <hr />
 
-                    pris un certificat sur decitre.di-static + prévu de gérer des redirections pour envoyer les anciennes urls vers le nouveau domaine. <hr />
+                    prévu de gérer des redirections pour envoyer les anciennes urls vers le nouveau domaine. <hr />
 
                     également acheté des certificats pour tous autres domaines (api, decitrepro) qui n’avaient pas encore de HTTPS.
 
@@ -1054,8 +1058,7 @@ Content-Security-Policy-Report-Only
 
                     certificats nécessaires sont générés avec Let's Encrypt pour éviter les certificats autosignés et avoir gratuitement autant de certificats valides que nécessaires. <hr />
 
-                    permis de nous assurer du bon fonctionnement des pages, de valider par ex que toutes les url proposées (liens internes, canonical, ressources) étaient bien servies par https. <hr />
-
+                    permis de nous assurer du bon fonctionnement des pages, de valider que toutes les url proposées étaient bien servies par https. <hr />
 
                 </aside>
             </section>
@@ -1075,7 +1078,7 @@ Content-Security-Policy-Report-Only
 
                     branche également dans apache une redirection systématique en 301 des pages http vers leurs équivalents https.  <hr />
 
-                    Attention aux redirects en cascade (webperf + moteur de recherche) <hr />
+                    ---- Attention aux redirects en cascade (webperf + moteur de recherche) ----  <hr />
 
                     Voilà pour la dernière étape de préparation de la bascule <hr />
 
@@ -1173,7 +1176,7 @@ Content-Security-Policy-Report-Only
 
                     D’abord ==> crée une nouveau site dans google search console <hr />
 
-                    Dans ce site ==> on indique url en https de notre site (on remplace pas la version http). <hr />
+                    Dans ce site ==> on indique url en https de notre site ----(on remplace pas la version http)-----. <hr />
                 </aside>
             </section>
 
@@ -1381,7 +1384,7 @@ Content-Security-Policy-Report-Only
                     Dans une moindre mesure, constate le même genre de hausse sur marques blanches indexées sur google.  <hr />
 
 
-                    Récupérer les données qq part ==> une rétention de 90 jours, vous pourrez donc avoir un suivi sur le plus long terme. <hr />
+                    -----Récupérer les données qq part ==> une rétention de 90 jours, vous pourrez donc avoir un suivi sur le plus long terme.----- <hr />
 
                 </aside>
             </section>
