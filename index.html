@@ -631,7 +631,7 @@ if ( req.url ~ "^/(index.php/)?(vente|liste_souhait|avis|tunnel
 
                     Par contre, problème avec la manière dont notre configuration varnish était conçue.  <hr />
 
-                    fonctionnement avec ce genre d'exclusion. <hr />
+                    fonctionnement ==> mise en cache systématique avec ce genre d'exclusion. <hr />
 
                     En gros avec ce type  d'exclusion, si oubli une url ==>  risque de mettre en cache des pages avec des données clients. ==> moyen<hr />
 
@@ -1145,9 +1145,9 @@ Content-Security-Policy-Report-Only
             <section>
                 <h3>Le jour J</h3>
 
-                <pre>
+                <div class="victory">
                     \o/
-                </pre>
+                </div>
 
                 <aside class="notes">
                     Un vidage de Varnish plus tard et tout notre site utilise https et ce en moins de 3 minutes \o/ <hr />
