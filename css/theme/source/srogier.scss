@@ -105,6 +105,27 @@ section.has-dark-background {
     font-size: 75%;
     font-style: italic;
   }
+
+  blockquote {
+    text-align: left;
+    padding: 20px;
+    font-style: normal;
+    background: #eee;
+    .author {
+      margin-top: 1em;
+      text-align: right;
+      font-style: italic;
+    }
+  }
+
+  .victory {
+    font-family: monospace;
+    display: block;
+    font-size: 3em;
+    line-height: 3em;
+    vertical-align: middle;
+    text-align: center;
+  }
 }
 
 section[data-background] {
@@ -120,4 +141,5 @@ section[data-background] {
     padding: 1em 0.1em;
   }
 }
+
 

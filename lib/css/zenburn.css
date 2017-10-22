@@ -2,8 +2,8 @@
     display: block;
     overflow-x: auto;
     padding: 0.5em;
-    background: #fdf6e3;
-    color: #657b83;
+    background: #073642;
+    color: #839496;
 }
 
 .hljs-comment,
